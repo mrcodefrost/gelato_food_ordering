@@ -10,6 +10,12 @@ const StoreContextProvider = (props) => {
 
     const [cartItems, setCartItems] = useState({});
 
+    // set backend url
+    const url = "http://localhost:4000";
+
+    // to save token
+    const [token, setToken] = useState("");
+
     const addToCart = (itemId) => {
 
         console.log('Item ID', itemId);
@@ -26,7 +32,6 @@ const StoreContextProvider = (props) => {
         setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }))
     };
 
-
     const getTotalCartAmount = () => {
         let totalAmount = 0;
         for(const item in cartItems) {
@@ -37,6 +42,14 @@ const StoreContextProvider = (props) => {
         return totalAmount;
     }
 
+    // To avoid logging out when page is reloaded
+    useEffect(() => {
+        // updating token state with local storage
+        if(localStorage.getItem("token")) {
+            setToken(localStorage.getItem("token"));
+        }
+    }, []);
+
     // any element added to this object is accessible in any component
     // using the context
     const contextValue = {
@@ -44,11 +57,15 @@ const StoreContextProvider = (props) => {
         // variables
         food_list,
         cartItems,
+        url,
+        token,
+        
         // functions
         setCartItems,
         addToCart,
         removeFromCart,
-        getTotalCartAmount
+        getTotalCartAmount,
+        setToken,
 
     };
     return (
