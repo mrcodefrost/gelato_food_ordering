@@ -1,5 +1,8 @@
 import express from "express";
 import cors from "cors";
+import { connectDB } from "./config/db.js";
+
+import foodRouter from "./routes/foodRoute.js";
 // import mongoose from "mongoose";
 // import dotenv from "dotenv";
 // import bodyParser from "body-parser";
@@ -16,6 +19,15 @@ const port = process.env.PORT || 4000;
 // middleware
 app.use(express.json()); // whenever request comes from frontend, it will be parsed as json
 app.use(cors()); // access backend from frontend
+
+
+// DB connection
+connectDB();
+
+// API Endpoints
+app.use("/api/food", foodRouter);
+// To serve images
+app.use("/images", express.static("uploads"));
 
 app.get("/", (req, res) => {
     res.send("Server is ready");
