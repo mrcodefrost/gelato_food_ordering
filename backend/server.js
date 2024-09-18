@@ -3,8 +3,11 @@ import cors from "cors";
 import { connectDB } from "./config/db.js";
 
 import foodRouter from "./routes/foodRoute.js";
-// import mongoose from "mongoose";
-// import dotenv from "dotenv";
+import userRouter from "./routes/userRoute.js";
+
+import 'dotenv/config';
+
+
 // import bodyParser from "body-parser";
 // import userRoutes from "./routes/userRoutes.js"
 // import orderRoutes from "./routes/orderRoutes.js
@@ -28,6 +31,7 @@ connectDB();
 app.use("/api/food", foodRouter);
 // To serve images
 app.use("/images", express.static("uploads"));
+app.use("/api/user", userRouter);
 
 app.get("/", (req, res) => {
     res.send("Server is ready");
