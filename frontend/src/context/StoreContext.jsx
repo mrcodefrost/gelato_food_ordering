@@ -19,7 +19,7 @@ const StoreContextProvider = (props) => {
 
     const [foodList, setFoodList] = useState([]);
 
-    const addToCart = (itemId) => {
+    const addToCart = async (itemId) => {
 
         console.log('Item ID', itemId);
         // if item is not already in cart
@@ -29,10 +29,21 @@ const StoreContextProvider = (props) => {
         else {
             setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }))
         }
+
+        // if token is present 
+        if (token) {
+            await axios.post(url + "/api/cart/add", { itemId }, { headers: { token } })
+        }
     };
 
-    const removeFromCart = (itemId) => {
+    const removeFromCart = async (itemId) => {
         setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }))
+
+        // if token is present then remove from cart ( send  the token in headers )
+        if (token) {
+            await axios.delete(url + "/api/cart/remove",
+                { data: { itemId }, headers: { token } });
+        }
     };
 
     const getTotalCartAmount = () => {
@@ -50,6 +61,16 @@ const StoreContextProvider = (props) => {
         setFoodList(response.data.data);
     }
 
+    const loadCartData = async (token) => {
+
+        if (token) {
+
+            const response = await axios.get(url + "/api/cart/get-cart",  { data: { }, headers: { token } });
+
+            setCartItems(response.data.cartData);
+        }
+    }
+
     // To avoid logging out when page is reloaded
     useEffect(() => {
 
@@ -61,6 +82,8 @@ const StoreContextProvider = (props) => {
             // updating token state with local storage
             if (localStorage.getItem("token")) {
                 setToken(localStorage.getItem("token"));
+                // to avoid losing cart data when page is reloaded
+                await loadCartData(localStorage.getItem("token"));
             }
         }
 
