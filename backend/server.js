@@ -7,6 +7,7 @@ import userRouter from "./routes/userRoute.js";
 
 import 'dotenv/config';
 import cartRouter from "./routes/cartRoute.js";
+import orderRouter from "./routes/orderRoute.js";
 
 
 // import bodyParser from "body-parser";
@@ -34,6 +35,7 @@ app.use("/api/food", foodRouter);
 app.use("/images", express.static("uploads"));
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
 
 app.get("/", (req, res) => {
     res.send("Server is ready");

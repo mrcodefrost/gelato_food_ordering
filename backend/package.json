@@ -5,11 +5,12 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "server":"nodemon server.js"
+    "server": "nodemon server.js"
   },
   "author": "mr.codefrost",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^22.7.5",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
