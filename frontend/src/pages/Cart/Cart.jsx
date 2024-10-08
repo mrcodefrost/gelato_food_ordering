@@ -28,9 +28,9 @@ const Cart = () => {
         {foodList.map((item, index) => {
           if (cartItems[item._id] > 0) {
             return (
-              <div>
+              <div key={Math.random()}>
                 <div className="cart-items-title cart-items-item" >
-                  <img src={item.image} alt="" />
+                  <img src={item.image} alt="No Image" />
                   <p>{item.name}</p>
                   <p>${item.price}</p>
                   <p>{cartItems[item._id]}</p>
