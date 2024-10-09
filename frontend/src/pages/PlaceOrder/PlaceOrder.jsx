@@ -1,12 +1,13 @@
 import './PlaceOrder.css';
 import { useContext, useState } from 'react';
 import { StoreContext } from '../../context/StoreContext.jsx';
-import { url } from 'inspector';
+import axios from 'axios';
+
 
 const PlaceOrder = () => {
 
 
-  const {getTotalCartAmount, url} = useContext(StoreContext);
+  const {getTotalCartAmount, url, foodList, cartItems, token} = useContext(StoreContext);
 
   const [data, setData] = useState({
     firstName: "",
@@ -34,7 +35,7 @@ const PlaceOrder = () => {
     event.preventDefault();
 
     let orderItems = [];
-    food_list.map((item) => {
+    foodList.map((item) => {
 
       if(cartItems[item._id] > 0){
         let itemInfo = item;
@@ -50,7 +51,7 @@ const PlaceOrder = () => {
       amount: getTotalCartAmount() + 2,
     }
 
-    let reponse = await axios.post(url + "api/order/place", orderData, {headers:{token}});
+    let reponse = await axios.post(url + "/api/order/place", orderData, {headers:{token}});
 
     if(reponse.data.success == true){
       const {session_url} = reponse.data;
