@@ -7,7 +7,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // Placeing user order for frontend
 const placeOrder = async (req, res) => {
     
-
     const frontend_url = "http://localhost:5173";
 
     try {
@@ -37,7 +36,6 @@ const placeOrder = async (req, res) => {
         }) );
 
         line_items.push({
-
             price_data: {
                 currency: "inr",
                 product_data: {
@@ -49,12 +47,13 @@ const placeOrder = async (req, res) => {
 
         });
 
+        console.log("Control reached before stripe checkout session");
+
         const session = await stripe.checkout.sessions.create({
             line_items: line_items,
             mode: "payment",
             success_url: `${frontend_url}/verify?success=true&orderId=${newOrder._id}`,
             cancel_url: `${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
-
         });
 
         // res.status(201).json({success: true, message : "Order Placed Successfully"});
@@ -84,5 +83,17 @@ const verifyOrder = async (req, res) => {
     }
 }
 
+// user orders for frontend
+const userOrders = async (req, res) => {
 
-export { placeOrder, verifyOrder };
+    try {
+        const orders = await orderModel.find({userId: req.body.userId});
+        res.json({success: true, data: orders});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Something went wrong" });
+    }
+}
+
+
+export { placeOrder, verifyOrder, userOrders };
