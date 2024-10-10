@@ -13,6 +13,9 @@ import {Route, Routes} from "react-router-dom";
 
 
 const App = () => {
+
+  const url = "http://localhost:4000";
+
   return (
     <div>
       <ToastContainer/>
