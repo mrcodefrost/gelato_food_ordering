@@ -1,5 +1,5 @@
 import './PlaceOrder.css';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState, useNavigate } from 'react';
 import { StoreContext } from '../../context/StoreContext.jsx';
 import axios from 'axios';
 
@@ -65,6 +65,19 @@ const PlaceOrder = () => {
 
   }
 
+  const navigate = useNavigate();
+
+  // function to redirect to cart page if cart is empty or if token is not present
+  useEffect(() => {
+
+    if (!token) {
+      navigate('/cart');
+    }
+    else if(getTotalCartAmount() === 0)
+    {
+      navigate('/cart');
+    }
+  }, [token]);
 
   return (
     <form onSubmit={placeOrder} action="" className="place-order">
